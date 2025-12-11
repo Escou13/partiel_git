@@ -5,7 +5,8 @@ echo ""
 echo "Utilisation mémoire:"
 free -h | grep -E "Mem|Swap"
 echo ""
-# ERREUR VOLONTAIRE: division par zéro
-echo "Calcul de pourcentage..."
-let "result = 100 / 0"
-echo "Mémoire disponible: $result%"
+# CORRECTION: calcul correct du pourcentage
+TOTAL=$(free | grep Mem | awk '{print $2}')
+USED=$(free | grep Mem | awk '{print $3}')
+PERCENT=$(awk "BEGIN {printf \"%.2f\", ($USED/$TOTAL)*100}")
+echo "Mémoire utilisée: $PERCENT%"
